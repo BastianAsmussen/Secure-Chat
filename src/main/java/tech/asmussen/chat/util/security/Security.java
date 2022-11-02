@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -46,7 +47,6 @@ import java.util.Base64;
  * @see #generateCipher(PublicKey)
  * @see #generateCipher(PublicKey, String)
  * @see #encryptMessage(Cipher, byte[])
- * @see #encryptMessage(PublicKey, byte[])
  * @see #encryptMessage(PublicKey, String)
  * @see #decryptMessage(PrivateKey, byte[])
  * @see #decryptMessage(PrivateKey, String)
@@ -324,7 +324,7 @@ public final class Security {
 		output.write(publicKeyDelimiters[1]);
 		output.newLine();
 		
-		output.close();
+		output.flush();
 	}
 	
 	/**
@@ -361,8 +361,6 @@ public final class Security {
 				publicKeyString.append(line);
 			}
 		}
-		
-		inputReader.close();
 		
 		return decodePublicKey(publicKeyString.toString());
 	}
@@ -458,31 +456,11 @@ public final class Security {
 	 * @see #encryptMessage(Cipher, byte[])
 	 * @since 1.0.0
 	 */
-	public byte[] encryptMessage(PublicKey publicKey, String input) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+	public String encryptMessage(PublicKey publicKey, String input) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 		
 		Cipher cipher = generateCipher(publicKey);
 		
-		return encryptMessage(cipher, input.getBytes());
-	}
-	
-	/**
-	 * Encrypt the given input with the given public key.
-	 *
-	 * @param publicKey Public key used for encryption of message.
-	 * @param input     The input used to encrypt as a byte array.
-	 * @return The encrypted input as a byte array.
-	 * @throws IllegalBlockSizeException If the input is too large throw this exception.
-	 * @throws BadPaddingException       If the input is not padded correctly throw this exception.
-	 * @throws NoSuchPaddingException    If the cipher is not supported throw this exception.
-	 * @throws NoSuchAlgorithmException  If the cipher is not supported throw this exception.
-	 * @throws InvalidKeyException       If the given public key is invalid throw this exception.
-	 * @since 1.0.0
-	 */
-	public byte[] encryptMessage(PublicKey publicKey, byte[] input) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-		
-		Cipher cipher = generateCipher(publicKey);
-		
-		return encryptMessage(cipher, input);
+		return encryptMessage(cipher, input.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	/**
@@ -495,11 +473,9 @@ public final class Security {
 	 * @throws BadPaddingException       If the input is not padded correctly throw this exception.
 	 * @since 1.0.0
 	 */
-	private byte[] encryptMessage(Cipher cipher, byte[] input) throws IllegalBlockSizeException, BadPaddingException {
+	private String encryptMessage(Cipher cipher, byte[] input) throws IllegalBlockSizeException, BadPaddingException {
 		
-		cipher.update(input);
-		
-		return cipher.doFinal();
+		return new String(Base64.getEncoder().encode(cipher.doFinal(input)));
 	}
 	
 	/**
@@ -516,7 +492,7 @@ public final class Security {
 	 * @see #decryptMessage(PrivateKey, byte[])
 	 * @since 1.0.0
 	 */
-	public byte[] decryptMessage(PrivateKey privateKey, String input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public String decryptMessage(PrivateKey privateKey, String input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		
 		return decryptMessage(privateKey, input.getBytes());
 	}
@@ -535,12 +511,12 @@ public final class Security {
 	 * @see #cipherAlgorithm
 	 * @since 1.0.0
 	 */
-	public byte[] decryptMessage(PrivateKey privateKey, byte[] input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public String decryptMessage(PrivateKey privateKey, byte[] input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		
 		Cipher cipher = Cipher.getInstance(cipherAlgorithm);
 		cipher.init(Cipher.DECRYPT_MODE, privateKey);
 		
-		return cipher.doFinal(input);
+		return new String(cipher.doFinal(Base64.getDecoder().decode(input)));
 	}
 	
 	/**
@@ -708,10 +684,10 @@ public final class Security {
 			
 			throw new IllegalArgumentException("The URL cannot be null.");
 		
-		final URLConnection CONNECTION = url.openConnection();
+		final URLConnection connection = url.openConnection();
 		
-		CONNECTION.connect();
-		CONNECTION.getInputStream().close();
+		connection.connect();
+		connection.getInputStream().close();
 		
 		return true;
 	}

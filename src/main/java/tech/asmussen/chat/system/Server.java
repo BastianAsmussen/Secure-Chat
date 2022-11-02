@@ -47,7 +47,7 @@ public class Server {
 			
 			clientPublicKey = securityInstance.receivePublicKey(clientSocket);
 			
-		} catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+		} catch (IOException | IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException e) {
 			
 			ErrorLogger.logAndExit("An error occurred while starting the server", e);
 		}
@@ -70,7 +70,7 @@ public class Server {
 	}
 	
 	public void sendMessage(String message) {
-		
+		/*
 		try {
 			
 			byte[] encryptedMessage = securityInstance.encryptMessage(clientPublicKey, message);
@@ -84,22 +84,27 @@ public class Server {
 			
 			ErrorLogger.logAndExit("An error occurred while sending a message!", e);
 		}
+		 */
 	}
 	
 	public String receiveMessage() {
-		
+		/*
 		try {
 			
 			String encryptedMessage = inputReader.readLine();
+			byte[] decryptedMessage = securityInstance.decryptMessage(keyPair.getPrivate(), encryptedMessage.getBytes());
 			
-			return new String(securityInstance.decryptMessage(keyPair.getPrivate(), encryptedMessage));
+			return new String(decryptedMessage);
 			
 		} catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
 		         IllegalBlockSizeException | BadPaddingException e) {
 			
+			e.printStackTrace();
+			
 			ErrorLogger.logAndExit("An error occurred while reading a message!", e);
 		}
 		
+		 */
 		return null;
 	}
 }
