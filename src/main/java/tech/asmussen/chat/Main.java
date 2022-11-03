@@ -37,6 +37,8 @@ public class Main {
 				
 				while (true) {
 					
+					clearLine();
+					
 					System.out.print("Me: ");
 					String message = scanner.nextLine();
 					
@@ -54,8 +56,10 @@ public class Main {
 					
 					String message = client.receiveMessage();
 					
-					System.out.println("\nThem: " + message);
-					System.out.print("Me: ");
+					clearLine();
+					
+					System.out.println("Them: " + message);
+					System.out.print("\rMe: ");
 				}
 			});
 			
@@ -96,13 +100,27 @@ public class Main {
 					
 					String message = server.receiveMessage();
 					
-					System.out.println("\nThem: " + message);
-					System.out.print("Me: ");
+					clearLine();
+					
+					System.out.println("Them: " + message);
+					System.out.print("\rMe: ");
 				}
 			});
 			
 			senderThread.start();
 			receiverThread.start();
 		}
+	}
+	
+	private static void clearLine() {
+		
+		System.out.print("\r");
+		
+		for (int i = 0; i < 100; i++) {
+			
+			System.out.print(" ");
+		}
+		
+		System.out.print("\r");
 	}
 }

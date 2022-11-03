@@ -70,12 +70,12 @@ public class Server {
 	}
 	
 	public void sendMessage(String message) {
-		/*
+		
 		try {
 			
-			byte[] encryptedMessage = securityInstance.encryptMessage(clientPublicKey, message);
+			String encryptedMessage = securityInstance.encryptMessage(clientPublicKey, message);
 			
-			outputWriter.write(new String(encryptedMessage));
+			outputWriter.write(encryptedMessage);
 			outputWriter.newLine();
 			outputWriter.flush();
 			
@@ -84,27 +84,22 @@ public class Server {
 			
 			ErrorLogger.logAndExit("An error occurred while sending a message!", e);
 		}
-		 */
 	}
 	
 	public String receiveMessage() {
-		/*
+		
 		try {
 			
 			String encryptedMessage = inputReader.readLine();
-			byte[] decryptedMessage = securityInstance.decryptMessage(keyPair.getPrivate(), encryptedMessage.getBytes());
 			
-			return new String(decryptedMessage);
+			return securityInstance.decryptMessage(keyPair.getPrivate(), encryptedMessage.getBytes());
 			
 		} catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
 		         IllegalBlockSizeException | BadPaddingException e) {
 			
-			e.printStackTrace();
-			
 			ErrorLogger.logAndExit("An error occurred while reading a message!", e);
 		}
 		
-		 */
 		return null;
 	}
 }
