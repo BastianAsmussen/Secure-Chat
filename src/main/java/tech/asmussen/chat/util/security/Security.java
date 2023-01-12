@@ -60,8 +60,8 @@ import java.util.Base64;
  * @see #validate2FA(String, String)
  * @see #validate2FA(String, int)
  * @see #isValidPassword(String)
- * @see #validateEmail(String)
- * @see #validateCreditCard(String)
+ * @see #isValidEmail(String)
+ * @see #isValidCreditCard(String)
  * @since 1.0.0
  */
 @Data
@@ -712,6 +712,7 @@ public final class Security {
 	 */
 	public boolean isValidPassword(String plainTextPassword) {
 		
+		
 		// TODO: Fix this method.
 		// "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,128}$"
 		final String filteredLowercaseLetters = filter(ALLOWED_LOWERCASE_LETTERS);
@@ -719,14 +720,19 @@ public final class Security {
 		final String filteredNumbers = filter(ALLOWED_NUMBERS);
 		final String filteredSpecialCharacters = filter(ALLOWED_SPECIAL_CHARACTERS);
 		
-		return plainTextPassword.matches(
-				"^(?=.*[" + filteredLowercaseLetters + "])" +
-						"(?=.*[" + filteredUppercaseLetters + "])" +
-						"(?=.*[" + filteredNumbers + "])" +
-						"(?=.*[" + filteredSpecialCharacters + "])" +
-						"[" + filteredLowercaseLetters + filteredUppercaseLetters + filteredNumbers + filteredSpecialCharacters + "]" +
-						"{" + MIN_PASSWORD_LENGTH + "," + MAX_PASSWORD_LENGTH + "}$"
-		);
+		final String pattern = String.format("^(?=.*[%s])(?=.*[%s])(?=.*[%s])(?=.*[%s])[%s\\d%s]{%d,%d}$",
+				filteredLowercaseLetters,
+				filteredUppercaseLetters,
+				filteredNumbers,
+				filteredSpecialCharacters,
+				filteredLowercaseLetters,
+				filteredUppercaseLetters,
+				MIN_PASSWORD_LENGTH,
+				MAX_PASSWORD_LENGTH);
+		
+		System.out.println(pattern);
+		
+		return plainTextPassword.matches(pattern);
 	}
 	
 	/**
@@ -739,7 +745,7 @@ public final class Security {
 	 * @return True if it is a valid email otherwise it returns false.
 	 * @since 1.0.0
 	 */
-	public boolean validateEmail(String email) {
+	public boolean isValidEmail(String email) {
 		
 		return email.matches("^[a-zA-Z\\d_+&*-]+(?:\\.[a-zA-Z\\d_+&*-]+)*@(?:[a-zA-Z\\d-]+\\.)+[a-zA-Z]{2,7}$");
 	}
@@ -752,7 +758,7 @@ public final class Security {
 	 * @return True if it is a valid credit card number otherwise it returns false.
 	 * @since 1.1.0
 	 */
-	public boolean validateCreditCard(String creditCard) {
+	public boolean isValidCreditCard(String creditCard) {
 		
 		int evenSum = 0;
 		int oddSum = 0;

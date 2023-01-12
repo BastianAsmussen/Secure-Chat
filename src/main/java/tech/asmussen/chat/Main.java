@@ -4,11 +4,13 @@ import tech.asmussen.chat.system.Client;
 import tech.asmussen.chat.system.Server;
 import tech.asmussen.chat.util.security.Security;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Main {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException {
 		
 		Security security = new Security();
 		
@@ -73,8 +75,7 @@ public class Main {
 			
 			Server server = new Server();
 			
-			System.out.println("Waiting for a client...");
-			
+			System.out.printf("Waiting for a client on %s:%d...\n", Inet4Address.getLocalHost().getHostAddress(), port);
 			server.start(port, security);
 			
 			System.out.println("Connection successful!");
@@ -87,7 +88,6 @@ public class Main {
 					String message = scanner.nextLine();
 					
 					if (message.isEmpty() || message.isBlank())
-						
 						continue;
 					
 					server.sendMessage(message);
