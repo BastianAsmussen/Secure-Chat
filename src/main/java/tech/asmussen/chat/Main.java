@@ -3,6 +3,7 @@ package tech.asmussen.chat;
 import tech.asmussen.chat.system.Client;
 import tech.asmussen.chat.system.Server;
 import tech.asmussen.chat.util.security.Security;
+import tech.asmussen.chat.util.security.SecurityBuilder;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;

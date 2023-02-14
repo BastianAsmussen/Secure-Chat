@@ -30,6 +30,13 @@ public class SecurityBuilder {
 	private int memoryCost;
 	private int parallelization;
 	
+	private String allowedLowercaseLetters;
+	private String allowedUppercaseLetters;
+	private String allowedSpecialCharacters;
+	private String allowedNumbers;
+	private int minPasswordLength;
+	private int maxPasswordLength;
+	
 	private String validationURL;
 	
 	/**
@@ -42,6 +49,12 @@ public class SecurityBuilder {
 	 * @see Security#DEFAULT_CPU_COST
 	 * @see Security#DEFAULT_MEMORY_COST
 	 * @see Security#DEFAULT_PARALLELIZATION
+	 * @see Security#DEFAULT_ALLOWED_LOWERCASE_LETTERS
+	 * @see Security#DEFAULT_ALLOWED_UPPERCASE_LETTERS
+	 * @see Security#DEFAULT_ALLOWED_SPECIAL_CHARACTERS
+	 * @see Security#DEFAULT_ALLOWED_NUMBERS
+	 * @see Security#DEFAULT_MIN_PASSWORD_LENGTH
+	 * @see Security#DEFAULT_MAX_PASSWORD_LENGTH
 	 * @see Security#DEFAULT_VALIDATION_URL
 	 * @since 1.0.0
 	 */
@@ -56,6 +69,13 @@ public class SecurityBuilder {
 		this.cpuCost = Security.DEFAULT_CPU_COST;
 		this.memoryCost = Security.DEFAULT_MEMORY_COST;
 		this.parallelization = Security.DEFAULT_PARALLELIZATION;
+		
+		this.allowedLowercaseLetters = Security.DEFAULT_ALLOWED_LOWERCASE_LETTERS;
+		this.allowedUppercaseLetters = Security.DEFAULT_ALLOWED_UPPERCASE_LETTERS;
+		this.allowedSpecialCharacters = Security.DEFAULT_ALLOWED_SPECIAL_CHARACTERS;
+		this.allowedNumbers = Security.DEFAULT_ALLOWED_NUMBERS;
+		this.minPasswordLength = Security.DEFAULT_MIN_PASSWORD_LENGTH;
+		this.maxPasswordLength = Security.DEFAULT_MAX_PASSWORD_LENGTH;
 		
 		this.validationURL = Security.DEFAULT_VALIDATION_URL;
 	}
@@ -159,6 +179,90 @@ public class SecurityBuilder {
 	}
 	
 	/**
+	 * Sets the allowed lowercase letters to use.
+	 *
+	 * @param allowedLowercaseLetters The allowed lowercase letters.
+	 * @return This {@link SecurityBuilder} object.
+	 * @since 1.0.0
+	 */
+	public SecurityBuilder setAllowedLowercaseLetters(String allowedLowercaseLetters) {
+		
+		this.allowedLowercaseLetters = allowedLowercaseLetters;
+		
+		return this;
+	}
+	
+	/**
+	 * Sets the allowed uppercase letters to use.
+	 *
+	 * @param allowedUppercaseLetters The allowed uppercase letters.
+	 * @return This {@link SecurityBuilder} object.
+	 * @since 1.0.0
+	 */
+	public SecurityBuilder setAllowedUppercaseLetters(String allowedUppercaseLetters) {
+		
+		this.allowedUppercaseLetters = allowedUppercaseLetters;
+		
+		return this;
+	}
+	
+	/**
+	 * Sets the allowed numbers to use.
+	 *
+	 * @param allowedNumbers The allowed numbers.
+	 * @return This {@link SecurityBuilder} object.
+	 * @since 1.0.0
+	 */
+	public SecurityBuilder setAllowedNumbers(String allowedNumbers) {
+		
+		this.allowedNumbers = allowedNumbers;
+		
+		return this;
+	}
+	
+	/**
+	 * Sets the allowed special characters to use.
+	 *
+	 * @param allowedSpecialCharacters The allowed special characters.
+	 * @return This {@link SecurityBuilder} object.
+	 * @since 1.0.0
+	 */
+	public SecurityBuilder setAllowedSpecialCharacters(String allowedSpecialCharacters) {
+		
+		this.allowedSpecialCharacters = allowedSpecialCharacters;
+		
+		return this;
+	}
+	
+	/**
+	 * Sets the minimum password length to use.
+	 *
+	 * @param minPasswordLength The minimum password length.
+	 * @return This {@link SecurityBuilder} object.
+	 * @since 1.0.0
+	 */
+	public SecurityBuilder setMinPasswordLength(int minPasswordLength) {
+		
+		this.minPasswordLength = minPasswordLength;
+		
+		return this;
+	}
+	
+	/**
+	 * Sets the maximum password length to use.
+	 *
+	 * @param maxPasswordLength The maximum password length.
+	 * @return This {@link SecurityBuilder} object.
+	 * @since 1.0.0
+	 */
+	public SecurityBuilder setMaxPasswordLength(int maxPasswordLength) {
+		
+		this.maxPasswordLength = maxPasswordLength;
+		
+		return this;
+	}
+	
+	/**
 	 * Sets the validation URL to use.
 	 *
 	 * @param validationURL The validation URL.
@@ -181,6 +285,21 @@ public class SecurityBuilder {
 	 */
 	public Security build() {
 		
-		return new Security(keySize, keyPairAlgorithm, publicKeyDelimiters, cipherAlgorithm, cpuCost, memoryCost, parallelization, validationURL);
+		return new Security(
+				this.keySize,
+				this.keyPairAlgorithm,
+				this.publicKeyDelimiters,
+				this.cipherAlgorithm,
+				this.cpuCost,
+				this.memoryCost,
+				this.parallelization,
+				this.allowedLowercaseLetters,
+				this.allowedUppercaseLetters,
+				this.allowedNumbers,
+				this.allowedSpecialCharacters,
+				this.minPasswordLength,
+				this.maxPasswordLength,
+				this.validationURL
+		);
 	}
 }

@@ -33,9 +33,9 @@ import java.util.Base64;
  * @see #DEFAULT_MEMORY_COST
  * @see #DEFAULT_PARALLELIZATION
  * @see #DEFAULT_VALIDATION_URL
- * @see #MAX_PASSWORD_LENGTH
- * @see #MIN_PASSWORD_LENGTH
- * @see #Security(int, String, String[], String, int, int, int, String)
+ * @see #DEFAULT_MAX_PASSWORD_LENGTH
+ * @see #DEFAULT_MIN_PASSWORD_LENGTH
+ * @see #Security(int, String, String[], String, int, int, int, String, String, String, String, int, int, String)
  * @see #Security()  Security
  * @see SecurityBuilder
  * @see #generateKeyPair()
@@ -131,7 +131,7 @@ public final class Security {
 	 * @see #generatePassword(int, boolean, boolean, boolean, boolean)
 	 * @since 1.0.2
 	 */
-	public static final int MAX_PASSWORD_LENGTH = 128;
+	public static final int DEFAULT_MAX_PASSWORD_LENGTH = 128;
 	
 	/**
 	 * The minimum length of a password.
@@ -140,7 +140,7 @@ public final class Security {
 	 * @see #generatePassword(int, boolean, boolean, boolean, boolean)
 	 * @since 1.0.2
 	 */
-	public static final int MIN_PASSWORD_LENGTH = 8;
+	public static final int DEFAULT_MIN_PASSWORD_LENGTH = 8;
 	
 	/**
 	 * The lowercase letters that are allowed in a password.
@@ -148,7 +148,7 @@ public final class Security {
 	 * @see #generatePassword(int, boolean, boolean, boolean, boolean)
 	 * @since 1.0.2
 	 */
-	public static final String ALLOWED_LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+	public static final String DEFAULT_ALLOWED_LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
 	
 	/**
 	 * The uppercase letters that are allowed in a password.
@@ -156,7 +156,7 @@ public final class Security {
 	 * @see #generatePassword(int, boolean, boolean, boolean, boolean)
 	 * @since 1.0.2
 	 */
-	public static final String ALLOWED_UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final String DEFAULT_ALLOWED_UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	/**
 	 * The numbers that are allowed in a password.
@@ -164,7 +164,7 @@ public final class Security {
 	 * @see #generatePassword(int, boolean, boolean, boolean, boolean)
 	 * @since 1.0.2
 	 */
-	public static final String ALLOWED_NUMBERS = "1234567890";
+	public static final String DEFAULT_ALLOWED_NUMBERS = "1234567890";
 	
 	/**
 	 * The special characters that are allowed in a password.
@@ -172,7 +172,7 @@ public final class Security {
 	 * @see #generatePassword(int, boolean, boolean, boolean, boolean)
 	 * @since 1.0.2
 	 */
-	public static final String ALLOWED_SPECIAL_CHARACTERS = "@$!%*?&";
+	public static final String DEFAULT_ALLOWED_SPECIAL_CHARACTERS = "@$!%*?&";
 	
 	/**
 	 * The delimiting lines used by the public keys when sent.
@@ -192,22 +192,35 @@ public final class Security {
 	private final int memoryCost;
 	private final int parallelization;
 	
+	private final String allowedLowercaseLetters;
+	private final String allowedUppercaseLetters;
+	private final String allowedSpecialCharacters;
+	private final String allowedNumbers;
+	private final int minPasswordLength;
+	private final int maxPasswordLength;
+	
 	private final String validationURL;
 	
 	/**
 	 * Makes a new instance of the Security class with the given arguments.
 	 *
-	 * @param keySize             The key size for the key pair generator.
-	 * @param keyPairAlgorithm    The algorithm for the key pair generator.
-	 * @param publicKeyDelimiters The delimiting lines used by the public keys when sent.
-	 * @param cipherAlgorithm     The algorithm for the cipher generator.
-	 * @param cpuCost             The CPU cost for the hash generator.
-	 * @param memoryCost          The memory cost for the hash generator.
-	 * @param parallelization     The parallelization for the hash generator.
-	 * @param validationURL       The URL to use for the hasInternet() method.
+	 * @param keySize                  The key size for the key pair generator.
+	 * @param keyPairAlgorithm         The algorithm for the key pair generator.
+	 * @param publicKeyDelimiters      The delimiting lines used by the public keys when sent.
+	 * @param cipherAlgorithm          The algorithm for the cipher generator.
+	 * @param cpuCost                  The CPU cost for the hash generator.
+	 * @param memoryCost               The memory cost for the hash generator.
+	 * @param parallelization          The parallelization for the hash generator.
+	 * @param allowedLowercaseLetters  The lowercase letters that are allowed in a password.
+	 * @param allowedUppercaseLetters  The uppercase letters that are allowed in a password.
+	 * @param allowedSpecialCharacters The special characters that are allowed in a password.
+	 * @param allowedNumbers           The numbers that are allowed in a password.
+	 * @param minPasswordLength        The minimum length of a password.
+	 * @param maxPasswordLength        The maximum length of a password.
+	 * @param validationURL            The URL to use for the hasInternet() method.
 	 * @since 1.1.1
 	 */
-	public Security(int keySize, String keyPairAlgorithm, String[] publicKeyDelimiters, String cipherAlgorithm, int cpuCost, int memoryCost, int parallelization, String validationURL) {
+	public Security(int keySize, String keyPairAlgorithm, String[] publicKeyDelimiters, String cipherAlgorithm, int cpuCost, int memoryCost, int parallelization, String allowedLowercaseLetters, String allowedUppercaseLetters, String allowedSpecialCharacters, String allowedNumbers, int minPasswordLength, int maxPasswordLength, String validationURL) {
 		
 		this.keySize = keySize;
 		
@@ -220,13 +233,20 @@ public final class Security {
 		this.memoryCost = memoryCost;
 		this.parallelization = parallelization;
 		
+		this.allowedLowercaseLetters = allowedLowercaseLetters;
+		this.allowedUppercaseLetters = allowedUppercaseLetters;
+		this.allowedSpecialCharacters = allowedSpecialCharacters;
+		this.allowedNumbers = allowedNumbers;
+		this.minPasswordLength = minPasswordLength;
+		this.maxPasswordLength = maxPasswordLength;
+		
 		this.validationURL = validationURL;
 	}
 	
 	/**
 	 * Makes a new instance of the Security class with all default values.
 	 *
-	 * @see #Security(int, String, String[], String, int, int, int, String)
+	 * @see #Security(int, String, String[], String, int, int, int, String, String, String, String, int, int, String)
 	 * @see #DEFAULT_KEY_SIZE
 	 * @see #DEFAULT_KEY_PAIR_ALGORITHM
 	 * @see #DEFAULT_PUBLIC_KEY_DELIMITERS
@@ -234,12 +254,18 @@ public final class Security {
 	 * @see #DEFAULT_CPU_COST
 	 * @see #DEFAULT_MEMORY_COST
 	 * @see #DEFAULT_PARALLELIZATION
+	 * @see #DEFAULT_ALLOWED_LOWERCASE_LETTERS
+	 * @see #DEFAULT_ALLOWED_UPPERCASE_LETTERS
+	 * @see #DEFAULT_ALLOWED_SPECIAL_CHARACTERS
+	 * @see #DEFAULT_ALLOWED_NUMBERS
+	 * @see #DEFAULT_MIN_PASSWORD_LENGTH
+	 * @see #DEFAULT_MAX_PASSWORD_LENGTH
 	 * @see #DEFAULT_VALIDATION_URL
 	 * @since 1.1.1
 	 */
 	public Security() {
 		
-		this(DEFAULT_KEY_SIZE, DEFAULT_KEY_PAIR_ALGORITHM, DEFAULT_PUBLIC_KEY_DELIMITERS, DEFAULT_CIPHER_ALGORITHM, DEFAULT_CPU_COST, DEFAULT_MEMORY_COST, DEFAULT_PARALLELIZATION, DEFAULT_VALIDATION_URL);
+		this(DEFAULT_KEY_SIZE, DEFAULT_KEY_PAIR_ALGORITHM, DEFAULT_PUBLIC_KEY_DELIMITERS, DEFAULT_CIPHER_ALGORITHM, DEFAULT_CPU_COST, DEFAULT_MEMORY_COST, DEFAULT_PARALLELIZATION, DEFAULT_ALLOWED_LOWERCASE_LETTERS, DEFAULT_ALLOWED_UPPERCASE_LETTERS, DEFAULT_ALLOWED_SPECIAL_CHARACTERS, DEFAULT_ALLOWED_NUMBERS, DEFAULT_MIN_PASSWORD_LENGTH, DEFAULT_MAX_PASSWORD_LENGTH, DEFAULT_VALIDATION_URL);
 	}
 	
 	private static boolean isEven(int n) {
@@ -249,19 +275,19 @@ public final class Security {
 	
 	private static String filter(String str) {
 		
-		final String specialRegExCharacters = ".^$*+?()[{\\|";
+		final String specialRegExCharacters = ".[]{}()<>*+-=!?^$|";
 		
 		StringBuilder filteredString = new StringBuilder();
 		
-		for (char character : str.toCharArray()) {
+		for (char c : str.toCharArray()) {
 			
-			if (specialRegExCharacters.contains(String.valueOf(character))) {
+			if (specialRegExCharacters.contains(String.valueOf(c))) {
 				
-				filteredString.append("\\").append(character);
+				filteredString.append("\\").append(c);
 				
 			} else {
 				
-				filteredString.append(character);
+				filteredString.append(c);
 			}
 		}
 		
@@ -300,7 +326,6 @@ public final class Security {
 		
 		return keyPairGenerator.generateKeyPair();
 	}
-	
 	
 	/**
 	 * Send the generated public key to the given socket.
@@ -613,18 +638,17 @@ public final class Security {
 	 * @param useSpecialCharacters Should the password contain symbols
 	 * @return The generated password.
 	 * @throws IllegalArgumentException If the length is not between throw this exception.
-	 * @see #MAX_PASSWORD_LENGTH
-	 * @see #MIN_PASSWORD_LENGTH
-	 * @see #ALLOWED_LOWERCASE_LETTERS
-	 * @see #ALLOWED_UPPERCASE_LETTERS
-	 * @see #ALLOWED_NUMBERS
-	 * @see #ALLOWED_SPECIAL_CHARACTERS
+	 * @see #allowedLowercaseLetters
+	 * @see #allowedUppercaseLetters
+	 * @see #allowedNumbers
+	 * @see #allowedSpecialCharacters
+	 * @see #minPasswordLength
+	 * @see #maxPasswordLength
 	 * @since 1.0.0
 	 */
 	public String generatePassword(int length, boolean useLowerCaseLetters, boolean useUpperCaseLetters, boolean useNumbers, boolean useSpecialCharacters) throws IllegalArgumentException {
 		
-		if (!(length >= MIN_PASSWORD_LENGTH) || !(length <= MAX_PASSWORD_LENGTH) ||
-				!useLowerCaseLetters && !useUpperCaseLetters && !useNumbers && !useSpecialCharacters) {
+		if (!(length >= minPasswordLength) || !(length <= maxPasswordLength) || !useLowerCaseLetters && !useUpperCaseLetters && !useNumbers && !useSpecialCharacters) {
 			
 			throw new IllegalArgumentException("Invalid arguments provided!");
 		}
@@ -633,24 +657,21 @@ public final class Security {
 		
 		String charset = "";
 		
-		if (useLowerCaseLetters) charset += ALLOWED_LOWERCASE_LETTERS;
-		if (useUpperCaseLetters) charset += ALLOWED_UPPERCASE_LETTERS;
-		if (useNumbers) charset += ALLOWED_SPECIAL_CHARACTERS;
-		if (useSpecialCharacters) charset += ALLOWED_SPECIAL_CHARACTERS;
+		if (useLowerCaseLetters) charset += allowedLowercaseLetters;
+		if (useUpperCaseLetters) charset += allowedUppercaseLetters;
+		if (useNumbers) charset += allowedNumbers;
+		if (useSpecialCharacters) charset += allowedSpecialCharacters;
 		
 		for (int i = 0; i < length; i++) {
 			
 			passwordBuilder.append(charset.charAt(new SecureRandom().nextInt(charset.length())));
 		}
 		
-		/*
-		TODO: Fix me.
-		
+		// Check if the generated password is valid.
 		if (!isValidPassword(passwordBuilder.toString())) {
 			
 			return generatePassword(length, useLowerCaseLetters, useUpperCaseLetters, useNumbers, useSpecialCharacters);
 		}
-		 */
 		
 		return passwordBuilder.toString();
 	}
@@ -680,9 +701,7 @@ public final class Security {
 	 */
 	public boolean hasInternet(URL url) throws IOException {
 		
-		if (url == null)
-			
-			throw new IllegalArgumentException("The URL cannot be null.");
+		if (url == null) throw new IllegalArgumentException("The URL cannot be null!");
 		
 		final URLConnection connection = url.openConnection();
 		
@@ -700,39 +719,27 @@ public final class Security {
 	 * Password must contain a symbol.
 	 * Password must be a certain length.
 	 *
-	 * @param plainTextPassword The password of the user.
+	 * @param plaintextPassword The password of the user.
 	 * @return True if it is a valid password otherwise it returns false.
-	 * @see #ALLOWED_LOWERCASE_LETTERS
-	 * @see #ALLOWED_UPPERCASE_LETTERS
-	 * @see #ALLOWED_NUMBERS
-	 * @see #ALLOWED_SPECIAL_CHARACTERS
-	 * @see #MAX_PASSWORD_LENGTH
-	 * @see #MIN_PASSWORD_LENGTH
+	 * @see #allowedLowercaseLetters
+	 * @see #allowedUppercaseLetters
+	 * @see #allowedNumbers
+	 * @see #allowedSpecialCharacters
+	 * @see #minPasswordLength
+	 * @see #maxPasswordLength
 	 * @since 1.0.0
 	 */
-	public boolean isValidPassword(String plainTextPassword) {
+	public boolean isValidPassword(String plaintextPassword) {
 		
+		// Compile a RegEx pattern based on the allowed characters.
+		String filteredLowercaseLetters = filter(allowedLowercaseLetters);
+		String filteredUppercaseLetters = filter(allowedUppercaseLetters);
+		String filteredNumbers = filter(allowedNumbers);
+		String filteredSpecialCharacters = filter(allowedSpecialCharacters);
 		
-		// TODO: Fix this method.
-		// "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,128}$"
-		final String filteredLowercaseLetters = filter(ALLOWED_LOWERCASE_LETTERS);
-		final String filteredUppercaseLetters = filter(ALLOWED_UPPERCASE_LETTERS);
-		final String filteredNumbers = filter(ALLOWED_NUMBERS);
-		final String filteredSpecialCharacters = filter(ALLOWED_SPECIAL_CHARACTERS);
+		final String rawPattern = "^(?=.*[%s])(?=.*[%s])(?=.*[%s])(?=.*[%s])[%s%s%s%s]{%d,%d}$".formatted(filteredLowercaseLetters, filteredUppercaseLetters, filteredNumbers, filteredSpecialCharacters, filteredLowercaseLetters, filteredUppercaseLetters, filteredNumbers, filteredSpecialCharacters, minPasswordLength, maxPasswordLength);
 		
-		final String pattern = String.format("^(?=.*[%s])(?=.*[%s])(?=.*[%s])(?=.*[%s])[%s\\d%s]{%d,%d}$",
-				filteredLowercaseLetters,
-				filteredUppercaseLetters,
-				filteredNumbers,
-				filteredSpecialCharacters,
-				filteredLowercaseLetters,
-				filteredUppercaseLetters,
-				MIN_PASSWORD_LENGTH,
-				MAX_PASSWORD_LENGTH);
-		
-		System.out.println(pattern);
-		
-		return plainTextPassword.matches(pattern);
+		return plaintextPassword.matches(rawPattern);
 	}
 	
 	/**
@@ -760,12 +767,14 @@ public final class Security {
 	 */
 	public boolean isValidCreditCard(String creditCard) {
 		
+		String filteredCreditCard = creditCard.replaceAll(" ", "").trim();
+		
 		int evenSum = 0;
 		int oddSum = 0;
 		
-		for (int i = creditCard.replaceAll(" ", "").length() - 1; i >= 0; i--) {
+		for (int i = filteredCreditCard.length() - 1; i >= 0; i--) {
 			
-			int n = Integer.parseInt(String.valueOf(creditCard.charAt(i)));
+			int n = Integer.parseInt(String.valueOf(filteredCreditCard.charAt(i)));
 			
 			if (isEven(i)) {
 				
