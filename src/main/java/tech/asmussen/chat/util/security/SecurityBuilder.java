@@ -280,7 +280,7 @@ public class SecurityBuilder {
 	 * Builds a {@link Security} object with the given parameters.
 	 *
 	 * @return The {@link Security} object.
-	 * @see Security#Security(int, String, String[], String, int, int, int, String)
+	 * @see Security#Security(int, String, String[], String, int, int, int, String, String, String, String, int, int, String)
 	 * @since 1.0.0
 	 */
 	public Security build() {

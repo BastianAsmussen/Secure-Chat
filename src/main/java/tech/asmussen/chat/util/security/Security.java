@@ -220,7 +220,21 @@ public final class Security {
 	 * @param validationURL            The URL to use for the hasInternet() method.
 	 * @since 1.1.1
 	 */
-	public Security(int keySize, String keyPairAlgorithm, String[] publicKeyDelimiters, String cipherAlgorithm, int cpuCost, int memoryCost, int parallelization, String allowedLowercaseLetters, String allowedUppercaseLetters, String allowedSpecialCharacters, String allowedNumbers, int minPasswordLength, int maxPasswordLength, String validationURL) {
+	public Security(int keySize,
+	                String keyPairAlgorithm,
+	                String[] publicKeyDelimiters,
+	                String cipherAlgorithm,
+	                int cpuCost,
+	                int memoryCost,
+	                int parallelization,
+	                String allowedLowercaseLetters,
+	                String allowedUppercaseLetters,
+	                String allowedSpecialCharacters,
+	                String allowedNumbers,
+	                int minPasswordLength,
+	                int maxPasswordLength,
+	                String validationURL
+	) {
 		
 		this.keySize = keySize;
 		
@@ -265,14 +279,43 @@ public final class Security {
 	 */
 	public Security() {
 		
-		this(DEFAULT_KEY_SIZE, DEFAULT_KEY_PAIR_ALGORITHM, DEFAULT_PUBLIC_KEY_DELIMITERS, DEFAULT_CIPHER_ALGORITHM, DEFAULT_CPU_COST, DEFAULT_MEMORY_COST, DEFAULT_PARALLELIZATION, DEFAULT_ALLOWED_LOWERCASE_LETTERS, DEFAULT_ALLOWED_UPPERCASE_LETTERS, DEFAULT_ALLOWED_SPECIAL_CHARACTERS, DEFAULT_ALLOWED_NUMBERS, DEFAULT_MIN_PASSWORD_LENGTH, DEFAULT_MAX_PASSWORD_LENGTH, DEFAULT_VALIDATION_URL);
+		this(
+			DEFAULT_KEY_SIZE,
+			DEFAULT_KEY_PAIR_ALGORITHM,
+			DEFAULT_PUBLIC_KEY_DELIMITERS,
+			DEFAULT_CIPHER_ALGORITHM,
+			DEFAULT_CPU_COST,
+			DEFAULT_MEMORY_COST,
+			DEFAULT_PARALLELIZATION,
+			DEFAULT_ALLOWED_LOWERCASE_LETTERS,
+			DEFAULT_ALLOWED_UPPERCASE_LETTERS,
+			DEFAULT_ALLOWED_SPECIAL_CHARACTERS,
+			DEFAULT_ALLOWED_NUMBERS,
+			DEFAULT_MIN_PASSWORD_LENGTH,
+			DEFAULT_MAX_PASSWORD_LENGTH,
+			DEFAULT_VALIDATION_URL
+		);
 	}
 	
+	/**
+	 * Checks if a given number is even or not.
+	 *
+	 * @param n The number to check.
+	 * @return True if the number is even, false otherwise.
+	 * @since 1.1.1
+	 */
 	private static boolean isEven(int n) {
 		
 		return n % 2 == 0;
 	}
 	
+	/**
+	 * Filter a string to make it safe for use in a regular expression.
+	 *
+	 * @param str The string to filter.
+	 * @return The filtered string.
+	 * @since 1.1.1
+	 */
 	private static String filter(String str) {
 		
 		final String specialRegExCharacters = ".[]{}()<>*+-=!?^$|";
@@ -771,7 +814,7 @@ public final class Security {
 		
 		int evenSum = 0;
 		int oddSum = 0;
-		
+
 		for (int i = filteredCreditCard.length() - 1; i >= 0; i--) {
 			
 			int n = Integer.parseInt(String.valueOf(filteredCreditCard.charAt(i)));
