@@ -85,6 +85,7 @@ public class SecurityBuilder {
 	 *
 	 * @param keySize The key size.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setKeySize(int keySize) {
@@ -99,6 +100,7 @@ public class SecurityBuilder {
 	 *
 	 * @param keyPairAlgorithm The key pair algorithm.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setKeyPairAlgorithm(String keyPairAlgorithm) {
@@ -113,6 +115,7 @@ public class SecurityBuilder {
 	 *
 	 * @param publicKeyDelimiters The delimiters.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setPublicKeyDelimiters(String[] publicKeyDelimiters) {
@@ -127,6 +130,7 @@ public class SecurityBuilder {
 	 *
 	 * @param cipherAlgorithm The cipher algorithm.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setCipherAlgorithm(String cipherAlgorithm) {
@@ -141,6 +145,7 @@ public class SecurityBuilder {
 	 *
 	 * @param cpuCost The cpu cost.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setCPUCost(int cpuCost) {
@@ -155,6 +160,7 @@ public class SecurityBuilder {
 	 *
 	 * @param memoryCost The memory cost.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setMemoryCost(int memoryCost) {
@@ -169,6 +175,7 @@ public class SecurityBuilder {
 	 *
 	 * @param parallelization The parallelization.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setParallelization(int parallelization) {
@@ -183,6 +190,7 @@ public class SecurityBuilder {
 	 *
 	 * @param allowedLowercaseLetters The allowed lowercase letters.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setAllowedLowercaseLetters(String allowedLowercaseLetters) {
@@ -197,6 +205,7 @@ public class SecurityBuilder {
 	 *
 	 * @param allowedUppercaseLetters The allowed uppercase letters.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setAllowedUppercaseLetters(String allowedUppercaseLetters) {
@@ -211,6 +220,7 @@ public class SecurityBuilder {
 	 *
 	 * @param allowedNumbers The allowed numbers.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setAllowedNumbers(String allowedNumbers) {
@@ -225,6 +235,7 @@ public class SecurityBuilder {
 	 *
 	 * @param allowedSpecialCharacters The allowed special characters.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setAllowedSpecialCharacters(String allowedSpecialCharacters) {
@@ -239,6 +250,7 @@ public class SecurityBuilder {
 	 *
 	 * @param minPasswordLength The minimum password length.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setMinPasswordLength(int minPasswordLength) {
@@ -253,6 +265,7 @@ public class SecurityBuilder {
 	 *
 	 * @param maxPasswordLength The maximum password length.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setMaxPasswordLength(int maxPasswordLength) {
@@ -267,6 +280,7 @@ public class SecurityBuilder {
 	 *
 	 * @param validationURL The validation URL.
 	 * @return This {@link SecurityBuilder} object.
+	 *
 	 * @since 1.0.0
 	 */
 	public SecurityBuilder setValidationURL(String validationURL) {
@@ -280,26 +294,15 @@ public class SecurityBuilder {
 	 * Builds a {@link Security} object with the given parameters.
 	 *
 	 * @return The {@link Security} object.
+	 *
 	 * @see Security#Security(int, String, String[], String, int, int, int, String, String, String, String, int, int, String)
 	 * @since 1.0.0
 	 */
 	public Security build() {
 		
-		return new Security(
-				this.keySize,
-				this.keyPairAlgorithm,
-				this.publicKeyDelimiters,
-				this.cipherAlgorithm,
-				this.cpuCost,
-				this.memoryCost,
-				this.parallelization,
-				this.allowedLowercaseLetters,
-				this.allowedUppercaseLetters,
-				this.allowedNumbers,
-				this.allowedSpecialCharacters,
-				this.minPasswordLength,
-				this.maxPasswordLength,
-				this.validationURL
-		);
+		return new Security(this.keySize, this.keyPairAlgorithm, this.publicKeyDelimiters, this.cipherAlgorithm,
+							this.cpuCost, this.memoryCost, this.parallelization, this.allowedLowercaseLetters,
+							this.allowedUppercaseLetters, this.allowedNumbers, this.allowedSpecialCharacters,
+							this.minPasswordLength, this.maxPasswordLength, this.validationURL);
 	}
 }

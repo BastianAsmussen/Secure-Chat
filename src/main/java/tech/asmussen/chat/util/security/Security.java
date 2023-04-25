@@ -24,7 +24,7 @@ import java.util.Base64;
  *
  * @author Bastian Almar Wolsgaard Asmussen (BastianA)
  * @author Casper Agerskov Madsen (consoleBeep)
- * @version 1.1.1
+ * @version 1.1.2
  * @see #DEFAULT_KEY_SIZE
  * @see #DEFAULT_KEY_PAIR_ALGORITHM
  * @see #DEFAULT_PUBLIC_KEY_DELIMITERS
@@ -179,7 +179,7 @@ public final class Security {
 	 *
 	 * @since 1.1.1
 	 */
-	public static final String[] DEFAULT_PUBLIC_KEY_DELIMITERS = {"---BEGIN PUBLIC KEY---", "---END PUBLIC KEY---"};
+	public static final String[] DEFAULT_PUBLIC_KEY_DELIMITERS = { "---BEGIN PUBLIC KEY---", "---END PUBLIC KEY---" };
 	
 	private final int keySize;
 	
@@ -220,21 +220,10 @@ public final class Security {
 	 * @param validationURL            The URL to use for the hasInternet() method.
 	 * @since 1.1.1
 	 */
-	public Security(int keySize,
-	                String keyPairAlgorithm,
-	                String[] publicKeyDelimiters,
-	                String cipherAlgorithm,
-	                int cpuCost,
-	                int memoryCost,
-	                int parallelization,
-	                String allowedLowercaseLetters,
-	                String allowedUppercaseLetters,
-	                String allowedSpecialCharacters,
-	                String allowedNumbers,
-	                int minPasswordLength,
-	                int maxPasswordLength,
-	                String validationURL
-	) {
+	public Security(int keySize, String keyPairAlgorithm, String[] publicKeyDelimiters, String cipherAlgorithm,
+					int cpuCost, int memoryCost, int parallelization, String allowedLowercaseLetters,
+					String allowedUppercaseLetters, String allowedSpecialCharacters, String allowedNumbers,
+					int minPasswordLength, int maxPasswordLength, String validationURL) {
 		
 		this.keySize = keySize;
 		
@@ -279,22 +268,10 @@ public final class Security {
 	 */
 	public Security() {
 		
-		this(
-			DEFAULT_KEY_SIZE,
-			DEFAULT_KEY_PAIR_ALGORITHM,
-			DEFAULT_PUBLIC_KEY_DELIMITERS,
-			DEFAULT_CIPHER_ALGORITHM,
-			DEFAULT_CPU_COST,
-			DEFAULT_MEMORY_COST,
-			DEFAULT_PARALLELIZATION,
-			DEFAULT_ALLOWED_LOWERCASE_LETTERS,
-			DEFAULT_ALLOWED_UPPERCASE_LETTERS,
-			DEFAULT_ALLOWED_SPECIAL_CHARACTERS,
-			DEFAULT_ALLOWED_NUMBERS,
-			DEFAULT_MIN_PASSWORD_LENGTH,
-			DEFAULT_MAX_PASSWORD_LENGTH,
-			DEFAULT_VALIDATION_URL
-		);
+		this(DEFAULT_KEY_SIZE, DEFAULT_KEY_PAIR_ALGORITHM, DEFAULT_PUBLIC_KEY_DELIMITERS, DEFAULT_CIPHER_ALGORITHM,
+			 DEFAULT_CPU_COST, DEFAULT_MEMORY_COST, DEFAULT_PARALLELIZATION, DEFAULT_ALLOWED_LOWERCASE_LETTERS,
+			 DEFAULT_ALLOWED_UPPERCASE_LETTERS, DEFAULT_ALLOWED_SPECIAL_CHARACTERS, DEFAULT_ALLOWED_NUMBERS,
+			 DEFAULT_MIN_PASSWORD_LENGTH, DEFAULT_MAX_PASSWORD_LENGTH, DEFAULT_VALIDATION_URL);
 	}
 	
 	/**
@@ -302,6 +279,7 @@ public final class Security {
 	 *
 	 * @param n The number to check.
 	 * @return True if the number is even, false otherwise.
+	 *
 	 * @since 1.1.1
 	 */
 	private static boolean isEven(int n) {
@@ -314,6 +292,7 @@ public final class Security {
 	 *
 	 * @param str The string to filter.
 	 * @return The filtered string.
+	 *
 	 * @since 1.1.1
 	 */
 	private static String filter(String str) {
@@ -341,6 +320,7 @@ public final class Security {
 	 * Generate a keypair of a certain size and return it.
 	 *
 	 * @return A keypair of the size specified in the constructor to be used along with other methods.
+	 *
 	 * @throws NoSuchAlgorithmException If the algorithm is not supported throw this exception.
 	 * @see #generateKeyPair(int, String)
 	 * @see #keySize
@@ -358,6 +338,7 @@ public final class Security {
 	 * @param keySize   Size of keypair, note: the bigger the key size the longer the generation time.
 	 * @param algorithm The algorithm to use for the keypair generation.
 	 * @return A keypair of size n to be used along with other methods.
+	 *
 	 * @throws NoSuchAlgorithmException If the algorithm is not supported throw this exception.
 	 * @since 1.0.0
 	 */
@@ -400,13 +381,15 @@ public final class Security {
 	 *
 	 * @param socket The socket to receive the public key from.
 	 * @return The public key, or null if the public key could not be received.
+	 *
 	 * @throws IOException               If an I/O error occurs.
 	 * @throws NoSuchAlgorithmException  If the {@link #keyPairAlgorithm} is not supported.
 	 * @throws InvalidKeySpecException   If the public key is invalid.
 	 * @throws IndexOutOfBoundsException If {@link #publicKeyDelimiters} is not of length 2.
 	 * @since 1.1.1
 	 */
-	public PublicKey receivePublicKey(Socket socket) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, IndexOutOfBoundsException {
+	public PublicKey receivePublicKey(Socket socket)
+			throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, IndexOutOfBoundsException {
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		
@@ -438,6 +421,7 @@ public final class Security {
 	 *
 	 * @param rawPublicKey The Base64 encoded public key.
 	 * @return The decoded public key.
+	 *
 	 * @throws NoSuchAlgorithmException If the algorithm is not supported throw this exception.
 	 * @throws InvalidKeySpecException  If the key is invalid throw this exception.
 	 * @see #keyPairAlgorithm
@@ -458,6 +442,7 @@ public final class Security {
 	 *
 	 * @param rawPrivateKey The Base64 encoded private key.
 	 * @return The decoded private key.
+	 *
 	 * @throws NoSuchAlgorithmException If the algorithm is not supported throw this exception.
 	 * @throws InvalidKeySpecException  If the key is invalid throw this exception.
 	 * @see #keyPairAlgorithm
@@ -478,6 +463,7 @@ public final class Security {
 	 *
 	 * @param publicKey Used for cipher generation.
 	 * @return A cipher used for encryption of a message.
+	 *
 	 * @throws NoSuchPaddingException   If the cipher is not supported throw this exception.
 	 * @throws NoSuchAlgorithmException If the cipher is not supported throw this exception.
 	 * @throws InvalidKeyException      If the given public key is invalid throw this exception.
@@ -485,7 +471,8 @@ public final class Security {
 	 * @see #generateCipher(PublicKey, String)
 	 * @since 1.0.0
 	 */
-	public Cipher generateCipher(PublicKey publicKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+	public Cipher generateCipher(PublicKey publicKey)
+			throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 		
 		return generateCipher(publicKey, cipherAlgorithm);
 	}
@@ -496,12 +483,14 @@ public final class Security {
 	 * @param publicKey Used for cipher generation.
 	 * @param algorithm The algorithm used for cipher generation.
 	 * @return A cipher used for encryption of a message.
+	 *
 	 * @throws NoSuchPaddingException   If the cipher is not supported throw this exception.
 	 * @throws NoSuchAlgorithmException If the cipher is not supported throw this exception.
 	 * @throws InvalidKeyException      If the given public key is invalid throw this exception.
 	 * @since 1.0.0
 	 */
-	public Cipher generateCipher(PublicKey publicKey, String algorithm) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+	public Cipher generateCipher(PublicKey publicKey, String algorithm)
+			throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 		
 		Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
@@ -515,6 +504,7 @@ public final class Security {
 	 * @param publicKey Public key used for decryption of message.
 	 * @param input     The input used to encrypt as a String.
 	 * @return The encrypted input as a byte array.
+	 *
 	 * @throws IllegalBlockSizeException If the input is too large throw this exception.
 	 * @throws BadPaddingException       If the input is not padded correctly throw this exception.
 	 * @throws InvalidKeyException       If the given public key is invalid throw this exception.
@@ -524,7 +514,9 @@ public final class Security {
 	 * @see #encryptMessage(Cipher, byte[])
 	 * @since 1.0.0
 	 */
-	public String encryptMessage(PublicKey publicKey, String input) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+	public String encryptMessage(PublicKey publicKey, String input)
+			throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException,
+				   InvalidKeyException {
 		
 		Cipher cipher = generateCipher(publicKey);
 		
@@ -537,6 +529,7 @@ public final class Security {
 	 * @param cipher The cipher used for encryption of message.
 	 * @param input  The input used to encrypt as a byte array.
 	 * @return The encrypted input as a byte array.
+	 *
 	 * @throws IllegalBlockSizeException If the input is too large throw this exception.
 	 * @throws BadPaddingException       If the input is not padded correctly throw this exception.
 	 * @since 1.0.0
@@ -552,6 +545,7 @@ public final class Security {
 	 * @param privateKey Private key used for decryption of message.
 	 * @param input      Input message as a byte array.
 	 * @return The decrypted message as a byte array.
+	 *
 	 * @throws NoSuchAlgorithmException  If the algorithm is not supported throw this exception.
 	 * @throws NoSuchPaddingException    If the padding is not supported throw this exception.
 	 * @throws InvalidKeyException       If the key is invalid throw this exception.
@@ -560,7 +554,9 @@ public final class Security {
 	 * @see #decryptMessage(PrivateKey, byte[])
 	 * @since 1.0.0
 	 */
-	public String decryptMessage(PrivateKey privateKey, String input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public String decryptMessage(PrivateKey privateKey, String input)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
+				   BadPaddingException {
 		
 		return decryptMessage(privateKey, input.getBytes());
 	}
@@ -571,15 +567,19 @@ public final class Security {
 	 * @param privateKey Private key used for decryption of message.
 	 * @param input      Input message as a byte array.
 	 * @return The decrypted message as a byte array.
+	 *
 	 * @throws NoSuchAlgorithmException  If the algorithm is not supported throw this exception.
 	 * @throws NoSuchPaddingException    If the padding scheme is not supported throw this exception.
 	 * @throws InvalidKeyException       If the key is invalid throw this exception.
-	 * @throws IllegalBlockSizeException If the size of the input is not a multiple of the block size throw this exception.
+	 * @throws IllegalBlockSizeException If the size of the input is not a multiple of the block size throw this
+	 * exception.
 	 * @throws BadPaddingException       If the padding bytes are incorrect throw this exception.
 	 * @see #cipherAlgorithm
 	 * @since 1.0.0
 	 */
-	public String decryptMessage(PrivateKey privateKey, byte[] input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+	public String decryptMessage(PrivateKey privateKey, byte[] input)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
+				   BadPaddingException {
 		
 		Cipher cipher = Cipher.getInstance(cipherAlgorithm);
 		cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -592,6 +592,7 @@ public final class Security {
 	 *
 	 * @param str Plain text token / password.
 	 * @return Returns the hashed password from the plain text password.
+	 *
 	 * @see #cpuCost
 	 * @see #memoryCost
 	 * @see #parallelization
@@ -611,6 +612,7 @@ public final class Security {
 	 * @param r   Memory cost parameter.
 	 * @param p   Parallelization parameter.
 	 * @return Returns the hashed password from the plain text password.
+	 *
 	 * @since 1.0.0
 	 */
 	public String generateHash(String str, int n, int r, int p) {
@@ -624,6 +626,7 @@ public final class Security {
 	 * @param str  The plain text token / password from the user.
 	 * @param hash The hash from the database.
 	 * @return True if the string matches the hash otherwise false.
+	 *
 	 * @since 1.0.0
 	 */
 	public boolean compareHash(String str, String hash) {
@@ -635,6 +638,7 @@ public final class Security {
 	 * Generate a 2FA secret key and return it.
 	 *
 	 * @return The generated secret key.
+	 *
 	 * @since 1.0.0
 	 */
 	public String generate2FA() {
@@ -648,6 +652,7 @@ public final class Security {
 	 * @param secretKey The secret key used for generating the code.
 	 * @param code      The 6-digit code used for validation.
 	 * @return True if the code matches the secret key otherwise false.
+	 *
 	 * @see #validate2FA(String, int)
 	 * @since 1.0.0
 	 */
@@ -664,6 +669,7 @@ public final class Security {
 	 * @param secretKey The secret key used for generating the code.
 	 * @param code      The 6-digit code used for validation.
 	 * @return True if the code matches the secret key otherwise false.
+	 *
 	 * @since 1.0.0
 	 */
 	public boolean validate2FA(String secretKey, int code) {
@@ -680,6 +686,7 @@ public final class Security {
 	 * @param useNumbers           Should the password contain digits?
 	 * @param useSpecialCharacters Should the password contain symbols
 	 * @return The generated password.
+	 *
 	 * @throws IllegalArgumentException If the length is not between throw this exception.
 	 * @see #allowedLowercaseLetters
 	 * @see #allowedUppercaseLetters
@@ -689,7 +696,9 @@ public final class Security {
 	 * @see #maxPasswordLength
 	 * @since 1.0.0
 	 */
-	public String generatePassword(int length, boolean useLowerCaseLetters, boolean useUpperCaseLetters, boolean useNumbers, boolean useSpecialCharacters) throws IllegalArgumentException {
+	public String generatePassword(int length, boolean useLowerCaseLetters, boolean useUpperCaseLetters,
+								   boolean useNumbers, boolean useSpecialCharacters)
+			throws IllegalArgumentException {
 		
 		if (!(length >= minPasswordLength) || !(length <= maxPasswordLength) || !useLowerCaseLetters && !useUpperCaseLetters && !useNumbers && !useSpecialCharacters) {
 			
@@ -713,7 +722,8 @@ public final class Security {
 		// Check if the generated password is valid.
 		if (!isValidPassword(passwordBuilder.toString())) {
 			
-			return generatePassword(length, useLowerCaseLetters, useUpperCaseLetters, useNumbers, useSpecialCharacters);
+			return generatePassword(length, useLowerCaseLetters, useUpperCaseLetters, useNumbers,
+									useSpecialCharacters);
 		}
 		
 		return passwordBuilder.toString();
@@ -723,6 +733,7 @@ public final class Security {
 	 * Checks if the application has a connection to the internet.
 	 *
 	 * @return True if the application has a connection to the internet otherwise it returns false.
+	 *
 	 * @throws IOException If an error occurs while checking the connection throw this exception.
 	 * @see #hasInternet(URL)
 	 * @see #validationURL
@@ -738,6 +749,7 @@ public final class Security {
 	 *
 	 * @param url The url to check the connection against.
 	 * @return True if the application has a connection to the internet otherwise it returns false.
+	 *
 	 * @throws IOException              If an error occurs while checking the connection throw this exception.
 	 * @throws IllegalArgumentException If the url parameter is null throw this exception.
 	 * @since 1.0.0
@@ -764,6 +776,7 @@ public final class Security {
 	 *
 	 * @param plaintextPassword The password of the user.
 	 * @return True if it is a valid password otherwise it returns false.
+	 *
 	 * @see #allowedLowercaseLetters
 	 * @see #allowedUppercaseLetters
 	 * @see #allowedNumbers
@@ -780,7 +793,17 @@ public final class Security {
 		String filteredNumbers = filter(allowedNumbers);
 		String filteredSpecialCharacters = filter(allowedSpecialCharacters);
 		
-		final String rawPattern = "^(?=.*[%s])(?=.*[%s])(?=.*[%s])(?=.*[%s])[%s%s%s%s]{%d,%d}$".formatted(filteredLowercaseLetters, filteredUppercaseLetters, filteredNumbers, filteredSpecialCharacters, filteredLowercaseLetters, filteredUppercaseLetters, filteredNumbers, filteredSpecialCharacters, minPasswordLength, maxPasswordLength);
+		final String rawPattern =
+				"^(?=.*[%s])(?=.*[%s])(?=.*[%s])(?=.*[%s])[%s%s%s%s]{%d,%d}$".formatted(filteredLowercaseLetters,
+																						filteredUppercaseLetters,
+																						filteredNumbers,
+																						filteredSpecialCharacters,
+																						filteredLowercaseLetters,
+																						filteredUppercaseLetters,
+																						filteredNumbers,
+																						filteredSpecialCharacters,
+																						minPasswordLength,
+																						maxPasswordLength);
 		
 		return plaintextPassword.matches(rawPattern);
 	}
@@ -793,6 +816,7 @@ public final class Security {
 	 *
 	 * @param email The email of the user.
 	 * @return True if it is a valid email otherwise it returns false.
+	 *
 	 * @since 1.0.0
 	 */
 	public boolean isValidEmail(String email) {
@@ -806,6 +830,7 @@ public final class Security {
 	 *
 	 * @param creditCard The credit card number to validate.
 	 * @return True if it is a valid credit card number otherwise it returns false.
+	 *
 	 * @since 1.1.0
 	 */
 	public boolean isValidCreditCard(String creditCard) {
@@ -814,7 +839,7 @@ public final class Security {
 		
 		int evenSum = 0;
 		int oddSum = 0;
-
+		
 		for (int i = filteredCreditCard.length() - 1; i >= 0; i--) {
 			
 			int n = Integer.parseInt(String.valueOf(filteredCreditCard.charAt(i)));
